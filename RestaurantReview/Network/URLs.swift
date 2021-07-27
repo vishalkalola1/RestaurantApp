@@ -13,8 +13,7 @@ struct URLs {
     
     ///Base URl replace with another in dev and production
     private static var baseurl : String {
-        return "http://localhost:8000/api/"
-        //return "https://andesrestaurant.herokuapp.com/api/"
+        return "https://andesrestaurant.herokuapp.com/api/"
     }
     
     static func urlBuilder(_ endURL: EndPoints, queryItems: [URLQueryItem] = []) -> URL? {
