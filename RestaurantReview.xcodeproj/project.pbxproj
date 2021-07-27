@@ -52,6 +52,7 @@
 		C94B60E326AF3B2000283C65 /* AdminReviewsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94B60E226AF3B2000283C65 /* AdminReviewsViewModel.swift */; };
 		C94B60E526AF540E00283C65 /* AdminAddReviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94B60E426AF540E00283C65 /* AdminAddReviewViewModel.swift */; };
 		C94B60E726AF604800283C65 /* AdminEditReviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94B60E626AF604800283C65 /* AdminEditReviewViewModel.swift */; };
+		C94B60EA26AF8B9400283C65 /* Restaurant_backend.zip in Resources */ = {isa = PBXBuildFile; fileRef = C94B60E926AF8B9400283C65 /* Restaurant_backend.zip */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -102,6 +103,7 @@
 		C94B60E226AF3B2000283C65 /* AdminReviewsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminReviewsViewModel.swift; sourceTree = "<group>"; };
 		C94B60E426AF540E00283C65 /* AdminAddReviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminAddReviewViewModel.swift; sourceTree = "<group>"; };
 		C94B60E626AF604800283C65 /* AdminEditReviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminEditReviewViewModel.swift; sourceTree = "<group>"; };
+		C94B60E926AF8B9400283C65 /* Restaurant_backend.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = Restaurant_backend.zip; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +136,7 @@
 		C94B607226AF17BC00283C65 /* RestaurantReview */ = {
 			isa = PBXGroup;
 			children = (
+				C94B60E826AF8B8600283C65 /* Backend_api */,
 				C94B60B926AF184A00283C65 /* Admin */,
 				C94B608226AF183000283C65 /* Auth */,
 				C94B609D26AF183000283C65 /* Network */,
@@ -336,6 +339,14 @@
 			path = ReviewsViewModel;
 			sourceTree = "<group>";
 		};
+		C94B60E826AF8B8600283C65 /* Backend_api */ = {
+			isa = PBXGroup;
+			children = (
+				C94B60E926AF8B9400283C65 /* Restaurant_backend.zip */,
+			);
+			path = Backend_api;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -394,6 +405,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C94B607B26AF17BD00283C65 /* Preview Assets.xcassets in Resources */,
+				C94B60EA26AF8B9400283C65 /* Restaurant_backend.zip in Resources */,
 				C94B607826AF17BD00283C65 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
