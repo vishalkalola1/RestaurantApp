@@ -12,15 +12,14 @@ import SwiftUI
 class RestaurantModel: Identifiable, Codable {
     
     let id: Int?
-    @Published var name: String?
-    @Published var avg: Double?
-    @Published var address: String?
-    @Published var contact: String?
+    let name: String?
+    let avg: Double?
+    let address: String?
+    let contact: String?
     
     var avgRating: String {
         avg == 0.0 ? "No reviews yet" : String(format: "%.1f", avg ?? 0.0)
     }
-    
     
     enum CodingKeys: CodingKey {
         case id, name, avg, address, contact

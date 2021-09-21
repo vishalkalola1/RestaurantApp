@@ -116,16 +116,24 @@ struct EditReviewsView: View {
                         }
                     }
                 }
+                .onReceive(viewModel.$restaurants) { restaurants in
+                    DispatchQueue.main.async {
+                        self.restaurant = restaurants.first(where: { restaurant in
+                            return restaurant.id == viewModel.review.restaurant
+                        })
+                    }
+                }
+                .onReceive(viewModel.$users) { users in
+                    DispatchQueue.main.async {
+                        self.user = viewModel.review.user
+                    }
+                }
                 
                 Spacer()
             }.padding(16)
             .navigationTitle("Edit")
             .navigationBarTitleDisplayMode(.inline)
             .onAppear(perform: {
-                self.user = viewModel.review.user
-                self.restaurant = viewModel.restaurants.first(where: { restaurant in
-                    return restaurant.id == viewModel.review.restaurant
-                })
                 self.rating = viewModel.review.rating
                 self.fullText = viewModel.review.comment ?? ""
                 self.dateOfVisit = viewModel.review.dateFormate

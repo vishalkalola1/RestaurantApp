@@ -11,7 +11,9 @@ class RestaurantDetailsViewModel: ObservableObject {
     
     @Published var restaurant: RestaurantModel
     @Published var userModel: UserModel
-    @Published var comments: [CommentsModel] = [CommentsModel(id: 1),CommentsModel(id: 2),CommentsModel(id: 3),CommentsModel(id: 4)]
+    @Published var comments: [CommentsModel] = []
+    @Published var avgRating: String
+    
     @Published var error: String?
     private let services: RestaurantServicesType
     
@@ -19,10 +21,11 @@ class RestaurantDetailsViewModel: ObservableObject {
         self.services = services
         self.restaurant = restaurant
         self.userModel = userModel
+        self.avgRating = ""
     }
     
     func sort(_ isasc: Bool) {
-        if isasc {
+        if !isasc {
             self.comments.sort{ $0.rating! < $1.rating! }
         } else {
             self.comments.sort{ $0.rating! > $1.rating! }
@@ -36,6 +39,7 @@ class RestaurantDetailsViewModel: ObservableObject {
                 switch results {
                 case .success(let comments):
                     self.comments = comments
+                    self.avgRating = String(format: "%.1f", self.calculateAvgRating())
                     break
                 case .failure(let error):
                     self.error = error.localizedDescription
@@ -43,5 +47,13 @@ class RestaurantDetailsViewModel: ObservableObject {
                 }
             }
         }
+    }
+    
+    func calculateAvgRating() -> Double {
+        var sum = 0.0
+        for comment in self.comments {
+            sum += Double(comment.rating ?? 0)
+        }
+        return sum / Double(self.comments.count)
     }
 }

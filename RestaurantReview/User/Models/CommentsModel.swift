@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class CommentsModel: Identifiable, ObservableObject, Codable {
+class CommentsModel: Identifiable, Codable {
     init(id: Int?, user:UserModel? = UserModel(id: 1, firstname: "Vishal", lastname: "Kalola", email: "", token: "", username: "", is_superuser: false, is_staff: false),comment:String? = "Test") {
         self.id = id
         self.user = user
@@ -17,11 +17,11 @@ class CommentsModel: Identifiable, ObservableObject, Codable {
     
     
     let id: Int?
-    @Published var user: UserModel?
-    @Published var rating: Int?
-    @Published var comment: String?
-    @Published var date: Double?
-    @Published var restaurant: Int?
+    var user: UserModel?
+    var rating: Int?
+    var comment: String?
+    var date: Double?
+    var restaurant: Int?
     
     
     var fullname: String? {

@@ -23,6 +23,7 @@ class AdminReviewsViewModel: ObservableObject {
             DispatchQueue.main.async {
                 switch results {
                 case .success(let comments):
+                    self.comments = []
                     self.comments = comments
                     break
                 case .failure(let error):

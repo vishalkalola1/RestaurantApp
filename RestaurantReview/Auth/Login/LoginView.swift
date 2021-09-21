@@ -21,120 +21,124 @@ struct LoginView: View {
     @State private var moveToAdmin: Bool = false
     
     var body: some View {
-        GeometryReader { geo in
-            VStack(alignment: .center, spacing:10) {
-                VStack {
-                    Image("backgroundImage")
-                        .resizable()
-                        .frame(width:geo.size.width, height: geo.size.height/3, alignment: .center)
-                        .aspectRatio(contentMode: .fit)
-                }.frame(width: geo.size.width, height: geo.size.height/3, alignment: .center)
-                VStack {
-                    VStack {
-                        Text("Welcome back!").font(.title).bold()
-                        Text("Login your existing account")
-                            .font(.system(size: 15))
-                            .foregroundColor(.gray)
-                    }
-                    VStack {
-                        VStack(alignment: .center, spacing: 25) {
-                            TextFieldView(placeHolder: "Username", imageName: "person", text: $username)
-                            TextFieldView(placeHolder: "Password", imageName: "lock", text: $password, isSecure: true)
-                        }
-                    }.padding()
-                    VStack {
-                        if !loading {
-                            NavigationLink(destination: RestaurantListView(viewModel: RestaurantViewModel(userModel: (viewModel.tokenModel?.user)!)), isActive: $moveToSuccess) {
-                                EmptyView()
+        NavigationView {
+            GeometryReader { geo in
+                ScrollView{
+                    VStack(alignment: .center, spacing:10) {
+                        VStack {
+                            Image("backgroundImage")
+                                .resizable()
+                                .frame(width:geo.size.width, height: 300, alignment: .center)
+                                .aspectRatio(contentMode: .fit)
+                        }.frame(width: geo.size.width, height: 300, alignment: .center)
+                        VStack {
+                            VStack {
+                                Text("Welcome back!").font(.title).bold()
+                                Text("Login your existing account")
+                                    .font(.system(size: 15))
+                                    .foregroundColor(.gray)
                             }
-                            
-                            NavigationLink(destination: AdminHomeView(userModel: viewModel.tokenModel?.user ?? nil), isActive: $moveToAdmin) {
-                                EmptyView()
-                            }
-                            
-                            Button {
-                                if username == "" {
-                                    error = "Please enter username"
-                                    alert = true
-                                } else if password == "" {
-                                    error = "Please enter password"
-                                    alert = true
-                                } else {
-                                    loading = true
-                                    let credentials = ["username": username,
-                                                       "password": password]
-                                    viewModel.login(credentials)
+                            VStack {
+                                VStack(alignment: .center, spacing: 25) {
+                                    TextFieldView(placeHolder: "Username", imageName: "person", text: $username)
+                                    TextFieldView(placeHolder: "Password", imageName: "lock", text: $password, isSecure: true)
                                 }
-                            } label: {
-                                Text("LOG IN")
-                                    .bold()
-                                    .foregroundColor(.white)
-                                    .frame(width: 150, height: 45, alignment: .center)
+                            }.padding()
+                            VStack {
+                                if !loading {
+                                    NavigationLink(destination: RestaurantListView(viewModel: RestaurantViewModel(userModel: (viewModel.tokenModel?.user)!)), isActive: $moveToSuccess) {
+                                        EmptyView()
+                                    }
+                                    
+                                    NavigationLink(destination: AdminHomeView(userModel: viewModel.tokenModel?.user ?? nil), isActive: $moveToAdmin) {
+                                        EmptyView()
+                                    }
+                                    
+                                    Button {
+                                        if username == "" {
+                                            error = "Please enter username"
+                                            alert = true
+                                        } else if password == "" {
+                                            error = "Please enter password"
+                                            alert = true
+                                        } else {
+                                            loading = true
+                                            let credentials = ["username": username,
+                                                               "password": password]
+                                            viewModel.login(credentials)
+                                        }
+                                    } label: {
+                                        Text("LOG IN")
+                                            .bold()
+                                            .foregroundColor(.white)
+                                            .frame(width: 150, height: 45, alignment: .center)
+                                            .background(Color.blue)
+                                            .font(.system(size: 13.0))
+                                            .cornerRadius(45, antialiased: false)
+                                    }
+                                    .alert(isPresented: $alert, title: "", message: error)
                                     .background(Color.blue)
-                                    .font(.system(size: 13.0))
-                                    .cornerRadius(45, antialiased: false)
-                            }
-                            .alert(isPresented: $alert, title: "", message: error)
-                            .background(Color.blue)
-                            .cornerRadius(45, antialiased: true)
-                        } else {
-                            Spinner()
-                                .frame(width: 45, height: 45, alignment: .center)
-                        }
-                    }.onReceive(viewModel.$tokenModel) { user in
-                        DispatchQueue.main.async {
-                            guard let user = user else { return }
-                            loading = false
-                            if user.key == nil {
-                                error = "Invalid credentials"
-                                alert = true
-                            } else {
-                                if registerClick == false {
-                                    if let is_superuser = user.user?.is_superuser, is_superuser == true {
-                                        moveToAdmin = true
+                                    .cornerRadius(45, antialiased: true)
+                                } else {
+                                    Spinner()
+                                        .frame(width: 45, height: 45, alignment: .center)
+                                }
+                            }.onReceive(viewModel.$tokenModel) { user in
+                                DispatchQueue.main.async {
+                                    guard let user = user else { return }
+                                    loading = false
+                                    if user.key == nil {
+                                        error = "Invalid credentials"
+                                        alert = true
                                     } else {
-                                        moveToSuccess = true
+                                        if registerClick == false {
+                                            if let is_superuser = user.user?.is_superuser, is_superuser == true {
+                                                moveToAdmin = true
+                                            } else {
+                                                moveToSuccess = true
+                                            }
+                                        }
                                     }
                                 }
+                            }.onReceive(viewModel.$error) { error in
+                                guard let error = error else { return }
+                                DispatchQueue.main.async {
+                                    self.error = error
+                                    alert = true
+                                    loading = false
+                                }
                             }
+                        }.frame(width: geo.size.width, height: geo.size.height/2, alignment: .center)
+                        VStack {
+                            Spacer()
+                            HStack(alignment: .center, spacing: 0) {
+                                Text("Don't have an account? ")
+                                    .font(.system(size: 15.0))
+                                Text("Sign Up")
+                                    .bold()
+                                    .font(.system(size: 15.0))
+                                    .foregroundColor(.blue)
+                                    .onTapGesture {
+                                        self.registerClick = true
+                                        loading = false
+                                    }
+                                NavigationLink(destination: SignUpView(), isActive: $registerClick) {
+                                    EmptyView()
+                                }
+                            }.padding(20)
                         }
-                    }.onReceive(viewModel.$error) { error in
-                        guard let error = error else { return }
-                        DispatchQueue.main.async {
-                            self.error = error
-                            alert = true
-                            loading = false
-                        }
+                        .frame(width: geo.size.width, height: 50, alignment: .center)
+                        //Spacer().frame(height:50)
                     }
-                }.frame(width: geo.size.width, height: geo.size.height/2, alignment: .center)
-                VStack {
-                    Spacer()
-                    HStack(alignment: .center, spacing: 0) {
-                        Text("Don't have an account? ")
-                            .font(.system(size: 15.0))
-                        Text("Sign Up")
-                            .bold()
-                            .font(.system(size: 15.0))
-                            .foregroundColor(.blue)
-                            .onTapGesture {
-                                self.registerClick = true
-                                loading = false
-                            }
-                        NavigationLink(destination: SignUpView(), isActive: $registerClick) {
-                            EmptyView()
-                        }
-                    }.padding(20)
+                    .frame(minWidth:0,
+                           maxWidth: .infinity,
+                           minHeight: 0,
+                           maxHeight: .infinity,
+                           alignment: .center)
+                    .ignoresSafeArea()
                 }
-                .frame(width: geo.size.width, height: 50, alignment: .center)
-                //Spacer().frame(height:50)
             }
-            .frame(minWidth:0,
-                   maxWidth: .infinity,
-                   minHeight: 0,
-                   maxHeight: .infinity,
-                   alignment: .center)
-            .ignoresSafeArea()
-        }
+        }.navigationViewStyle(StackNavigationViewStyle())
     }
 }
 

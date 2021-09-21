@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct AdminReviewsViews: View {
+    
     @StateObject var viewModel: AdminReviewsViewModel
     @State private var error: String = ""
     @State private var alert: Bool = false
@@ -37,13 +38,11 @@ struct AdminReviewsViews: View {
                     self.error = error
                     alert = true
                 }
-                
             }else{
                 Text("No Reviews")
             }
         }
         .onAppear(perform: {
-            print("----------->>>>>>>>> Test")
             DispatchQueue.main.async {
                 viewModel.listComments()
             }

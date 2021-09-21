@@ -46,7 +46,7 @@ struct RestaurantDetailsView: View {
                     HStack {
                         Image(systemName: "star.fill")
                             .foregroundColor(.yellow)
-                        Text(viewModel.restaurant.avgRating)
+                        Text(viewModel.avgRating)
                             .font(.system(size: 15))
                         Spacer()
                     }
@@ -112,18 +112,11 @@ struct RestaurantDetailsView: View {
             viewModel.fetchComments()
         })
     }
-    
 }
 
 struct CommentsCellView: View {
     
-    var comment: CommentsModel {
-        didSet {
-            rating = comment.rating
-        }
-    }
-    
-    @State private var rating: Int?
+    var comment: CommentsModel
     
     var body: some View {
         VStack (alignment: .leading, spacing: 5){
@@ -131,7 +124,7 @@ struct CommentsCellView: View {
                 .bold()
                 .font(.system(size: 15))
             HStack {
-                RatingView(rating: $rating, max: 5)
+                RatingView(rating: .constant(comment.rating), max: 5)
                     .frame(width: 100, height: 15, alignment: .center)
                     .disabled(true)
                 Text(comment.localDate)
@@ -140,8 +133,6 @@ struct CommentsCellView: View {
             }
             Text(comment.comment ?? "")
                 .font(.system(size: 15))
-        }.onAppear {
-            rating = comment.rating
         }
     }
 }

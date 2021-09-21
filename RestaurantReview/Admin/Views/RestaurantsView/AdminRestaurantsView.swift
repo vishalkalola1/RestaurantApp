@@ -42,7 +42,6 @@ struct AdminRestaurantsView: View {
             }
         }
         .onAppear(perform: {
-            print("----------->>>>>>>>> Test")
             viewModel.fetchRestaurants()
         })
         .navigationBarTitleDisplayMode(.inline)

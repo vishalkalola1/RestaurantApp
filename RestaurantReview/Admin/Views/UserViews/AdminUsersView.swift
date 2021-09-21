@@ -45,7 +45,6 @@ struct AdminUsersView: View {
             }
         }
         .onAppear(perform: {
-            print("----------->>>>>>>>> Test")
             viewModel.listUsers()
         })
         .navigationBarTitleDisplayMode(.inline)
