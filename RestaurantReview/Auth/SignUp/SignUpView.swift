@@ -109,6 +109,7 @@ struct SignUpView: View {
                    maxHeight: .infinity,
                    alignment: .center)
         }
+        .navigationBarHidden(false)
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle("Register")
     }

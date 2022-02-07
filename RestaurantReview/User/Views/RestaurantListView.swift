@@ -32,6 +32,7 @@ struct RestaurantListView: View {
         .onAppear {
             viewModel.fetchRestaurants()
         }
+        .navigationBarHidden(false)
         .navigationTitle("Restaurants")
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(trailing:

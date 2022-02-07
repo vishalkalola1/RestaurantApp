@@ -13,6 +13,9 @@ typealias UsersResult = (Result<[UserModel], Error>) -> Void
 typealias UserResult = (Result<UserModel, Error>) -> Void
 
 protocol UserServicesType: AnyObject {
+    @available(iOS 15.0, *)
+    func login(_ credentials: [String:Any]) async ->  Result<TokenModel, Error>
+    
     func login(_ credentials: [String:Any], completion: @escaping LoginResult)
     func register(_ user: [String:Any], completion: @escaping LoginResult)
     func users(completion: @escaping UsersResult)
@@ -54,6 +57,18 @@ class UserServices: UserServicesType {
                 break;
             }
         }
+    }
+    
+    @available(iOS 15.0, *)
+    func login(_ credentials: [String:Any]) async ->  Result<TokenModel, Error> {
+        
+        guard let url = URLs.urlBuilder(.login) else {
+            return .failure(CustomError.NullURL)
+        }
+        
+        let request = URLRequest.builder(url, httpMethod: .POST, body: credentials)
+        
+        return await network.api(with: request, model: TokenModel.self)
     }
     
     /**

@@ -13,12 +13,6 @@ struct LoginView: View {
     
     @State private var username: String = ""
     @State private var password: String = ""
-    @State private var alert: Bool = false
-    @State private var error: String = ""
-    @State private var loading: Bool = false
-    @State private var registerClick: Bool = false
-    @State private var moveToSuccess: Bool = false
-    @State private var moveToAdmin: Bool = false
     
     var body: some View {
         NavigationView {
@@ -45,27 +39,31 @@ struct LoginView: View {
                                 }
                             }.padding()
                             VStack {
-                                if !loading {
-                                    NavigationLink(destination: RestaurantListView(viewModel: RestaurantViewModel(userModel: (viewModel.tokenModel?.user)!)), isActive: $moveToSuccess) {
+                                if !viewModel.loading {
+                                    NavigationLink(destination: RestaurantListView(viewModel: RestaurantViewModel(userModel: (viewModel.tokenModel?.user)!)), isActive: $viewModel.moveToSuccess) {
                                         EmptyView()
                                     }
                                     
-                                    NavigationLink(destination: AdminHomeView(userModel: viewModel.tokenModel?.user ?? nil), isActive: $moveToAdmin) {
+                                    NavigationLink(destination: AdminHomeView(userModel: viewModel.tokenModel?.user ?? nil), isActive: $viewModel.moveToAdmin) {
                                         EmptyView()
                                     }
                                     
                                     Button {
                                         if username == "" {
-                                            error = "Please enter username"
-                                            alert = true
+                                            viewModel.error = "Please enter username"
+                                            viewModel.alert = true
                                         } else if password == "" {
-                                            error = "Please enter password"
-                                            alert = true
+                                            viewModel.error = "Please enter password"
+                                            viewModel.alert = true
                                         } else {
-                                            loading = true
+                                            viewModel.loading = true
                                             let credentials = ["username": username,
                                                                "password": password]
-                                            viewModel.login(credentials)
+                                            if #available(iOS 14.0, *) {
+                                                viewModel.login(credentials)
+                                            }else {
+                                                viewModel.login(credentials)
+                                            }
                                         }
                                     } label: {
                                         Text("LOG IN")
@@ -76,36 +74,11 @@ struct LoginView: View {
                                             .font(.system(size: 13.0))
                                             .cornerRadius(45, antialiased: false)
                                     }
-                                    .alert(isPresented: $alert, title: "", message: error)
                                     .background(Color.blue)
                                     .cornerRadius(45, antialiased: true)
                                 } else {
                                     Spinner()
                                         .frame(width: 45, height: 45, alignment: .center)
-                                }
-                            }.onReceive(viewModel.$tokenModel) { user in
-                                DispatchQueue.main.async {
-                                    guard let user = user else { return }
-                                    loading = false
-                                    if user.key == nil {
-                                        error = "Invalid credentials"
-                                        alert = true
-                                    } else {
-                                        if registerClick == false {
-                                            if let is_superuser = user.user?.is_superuser, is_superuser == true {
-                                                moveToAdmin = true
-                                            } else {
-                                                moveToSuccess = true
-                                            }
-                                        }
-                                    }
-                                }
-                            }.onReceive(viewModel.$error) { error in
-                                guard let error = error else { return }
-                                DispatchQueue.main.async {
-                                    self.error = error
-                                    alert = true
-                                    loading = false
                                 }
                             }
                         }.frame(width: geo.size.width, height: geo.size.height/2, alignment: .center)
@@ -119,16 +92,14 @@ struct LoginView: View {
                                     .font(.system(size: 15.0))
                                     .foregroundColor(.blue)
                                     .onTapGesture {
-                                        self.registerClick = true
-                                        loading = false
+                                        viewModel.registerClick = true
                                     }
-                                NavigationLink(destination: SignUpView(), isActive: $registerClick) {
+                                NavigationLink(destination: SignUpView(), isActive: $viewModel.registerClick) {
                                     EmptyView()
                                 }
                             }.padding(20)
                         }
                         .frame(width: geo.size.width, height: 50, alignment: .center)
-                        //Spacer().frame(height:50)
                     }
                     .frame(minWidth:0,
                            maxWidth: .infinity,
@@ -136,9 +107,12 @@ struct LoginView: View {
                            maxHeight: .infinity,
                            alignment: .center)
                     .ignoresSafeArea()
+                    .alert(isPresented: $viewModel.alert, title: "", message: viewModel.error)
                 }
             }
-        }.navigationViewStyle(StackNavigationViewStyle())
+            .navigationBarHidden(true)
+            .navigationViewStyle(StackNavigationViewStyle())
+        }
     }
 }
 
@@ -166,10 +140,19 @@ struct TextFieldView: View {
                     .font(.system(size: 15.0))
                     .foregroundColor(.blue)
             }else {
-                TextField(placeHolder, text: $text)
-                    .frame(height: 50, alignment: .center)
-                    .font(.system(size: 15.0))
-                    .foregroundColor(.blue)
+                if #available(iOS 15.0, *) {
+                    TextField(placeHolder, text: $text)
+                        .textInputAutocapitalization(.never)
+                        .frame(height: 50, alignment: .center)
+                        .font(.system(size: 15.0))
+                        .foregroundColor(.blue)
+                } else {
+                    TextField(placeHolder, text: $text)
+                        .frame(height: 50, alignment: .center)
+                        .font(.system(size: 15.0))
+                        .foregroundColor(.blue)
+                        .autocapitalization(.none)
+                }
             }
         }
         .padding([.leading, .trailing], 20)
