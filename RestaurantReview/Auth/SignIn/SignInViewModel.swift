@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import Combine
 
-@MainActor class SignInViewModel: ObservableObject {
+class SignInViewModel: ObservableObject {
     @Published public var tokenModel: TokenModel? {
         didSet {
             self.loading = false
@@ -17,7 +17,7 @@ import Combine
                 self.error = "Invalid credentials"
             } else {
                 UserDefaults.standard.set(self.tokenModel?.key, forKey: "token")
-                if let is_superuser = tokenModel?.user?.is_superuser, is_superuser == true {
+                if let is_superuser = tokenModel?.user?.is_superuser, is_superuser {
                     self.moveToAdmin = true
                 } else {
                     self.moveToSuccess = true
@@ -25,13 +25,13 @@ import Combine
             }
         }
     }
+    
     @Published public var error: String? {
         didSet {
             self.loading = false
             alert = error != nil
         }
     }
-    @Published public var registerClick: Bool = false
     @Published public var alert: Bool = false
     @Published public var loading: Bool = false
     @Published public var moveToSuccess: Bool = false
@@ -43,26 +43,18 @@ import Combine
         self.userServices = userServices
     }
     
-    func login(_ credentials: [String:Any]) {
-        userServices.login(credentials) { [weak self] result in
-                self?.fillData(result: result)
-        }
-    }
-    
     @available(iOS 15.0, *)
     func login(_ credentials: [String: Any]) async {
         let result = await userServices.login(credentials)
-        fillData(result: result)
+        await fillData(result: result)
     }
     
-    func fillData(result: Result<TokenModel, Error>) {
-        DispatchQueue.main.async {
-            switch result {
-            case .success(let tokenModel):
-                self.tokenModel = tokenModel
-            case .failure(let error):
-                self.error = error.localizedDescription
-            }
+    @MainActor func fillData(result: Result<TokenModel, Error>) {
+        switch result {
+        case .success(let tokenModel):
+            self.tokenModel = tokenModel
+        case .failure(let error):
+            self.error = error.localizedDescription
         }
     }
 }

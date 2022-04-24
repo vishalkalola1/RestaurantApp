@@ -15,7 +15,7 @@
 		C94B60A426AF183000283C65 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94B608626AF183000283C65 /* SignUpView.swift */; };
 		C94B60A526AF183000283C65 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94B608726AF183000283C65 /* UserModel.swift */; };
 		C94B60A626AF183000283C65 /* TokenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94B608826AF183000283C65 /* TokenModel.swift */; };
-		C94B60A726AF183000283C65 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94B608A26AF183000283C65 /* LoginView.swift */; };
+		C94B60A726AF183000283C65 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94B608A26AF183000283C65 /* SignInView.swift */; };
 		C94B60A826AF183000283C65 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94B608B26AF183000283C65 /* SignInViewModel.swift */; };
 		C94B60A926AF183000283C65 /* RestaurantDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94B608E26AF183000283C65 /* RestaurantDetailsViewModel.swift */; };
 		C94B60AA26AF183000283C65 /* AddReviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94B608F26AF183000283C65 /* AddReviewViewModel.swift */; };
@@ -53,6 +53,10 @@
 		C94B60E526AF540E00283C65 /* AdminAddReviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94B60E426AF540E00283C65 /* AdminAddReviewViewModel.swift */; };
 		C94B60E726AF604800283C65 /* AdminEditReviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94B60E626AF604800283C65 /* AdminEditReviewViewModel.swift */; };
 		C94B60EA26AF8B9400283C65 /* Restaurant_backend.zip in Resources */ = {isa = PBXBuildFile; fileRef = C94B60E926AF8B9400283C65 /* Restaurant_backend.zip */; };
+		C9C51D1928157B3B003FA769 /* SignInDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C51D1828157B3B003FA769 /* SignInDTO.swift */; };
+		C9C51D1C28159145003FA769 /* View+Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C51D1B28159145003FA769 /* View+Extentions.swift */; };
+		C9C51D1E281591CC003FA769 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C51D1D281591CC003FA769 /* CustomTextField.swift */; };
+		C9C51D20281591F9003FA769 /* TappeableNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C51D1F281591F9003FA769 /* TappeableNavigation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,7 +70,7 @@
 		C94B608626AF183000283C65 /* SignUpView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		C94B608726AF183000283C65 /* UserModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		C94B608826AF183000283C65 /* TokenModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenModel.swift; sourceTree = "<group>"; };
-		C94B608A26AF183000283C65 /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		C94B608A26AF183000283C65 /* SignInView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		C94B608B26AF183000283C65 /* SignInViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
 		C94B608E26AF183000283C65 /* RestaurantDetailsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantDetailsViewModel.swift; sourceTree = "<group>"; };
 		C94B608F26AF183000283C65 /* AddReviewViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddReviewViewModel.swift; sourceTree = "<group>"; };
@@ -104,6 +108,10 @@
 		C94B60E426AF540E00283C65 /* AdminAddReviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminAddReviewViewModel.swift; sourceTree = "<group>"; };
 		C94B60E626AF604800283C65 /* AdminEditReviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminEditReviewViewModel.swift; sourceTree = "<group>"; };
 		C94B60E926AF8B9400283C65 /* Restaurant_backend.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = Restaurant_backend.zip; sourceTree = "<group>"; };
+		C9C51D1828157B3B003FA769 /* SignInDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInDTO.swift; sourceTree = "<group>"; };
+		C9C51D1B28159145003FA769 /* View+Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extentions.swift"; sourceTree = "<group>"; };
+		C9C51D1D281591CC003FA769 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		C9C51D1F281591F9003FA769 /* TappeableNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TappeableNavigation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,6 +144,7 @@
 		C94B607226AF17BC00283C65 /* RestaurantReview */ = {
 			isa = PBXGroup;
 			children = (
+				C9C51D1A2815912A003FA769 /* CoreUI */,
 				C94B60E826AF8B8600283C65 /* Backend_api */,
 				C94B60B926AF184A00283C65 /* Admin */,
 				C94B608226AF183000283C65 /* Auth */,
@@ -164,7 +173,7 @@
 				C94B608426AF183000283C65 /* SignUp */,
 				C94B608726AF183000283C65 /* UserModel.swift */,
 				C94B608826AF183000283C65 /* TokenModel.swift */,
-				C94B608926AF183000283C65 /* Login */,
+				C94B608926AF183000283C65 /* SignIn */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -178,13 +187,14 @@
 			path = SignUp;
 			sourceTree = "<group>";
 		};
-		C94B608926AF183000283C65 /* Login */ = {
+		C94B608926AF183000283C65 /* SignIn */ = {
 			isa = PBXGroup;
 			children = (
-				C94B608A26AF183000283C65 /* LoginView.swift */,
+				C94B608A26AF183000283C65 /* SignInView.swift */,
 				C94B608B26AF183000283C65 /* SignInViewModel.swift */,
+				C9C51D1828157B3B003FA769 /* SignInDTO.swift */,
 			);
-			path = Login;
+			path = SignIn;
 			sourceTree = "<group>";
 		};
 		C94B608C26AF183000283C65 /* User */ = {
@@ -347,6 +357,16 @@
 			path = Backend_api;
 			sourceTree = "<group>";
 		};
+		C9C51D1A2815912A003FA769 /* CoreUI */ = {
+			isa = PBXGroup;
+			children = (
+				C9C51D1B28159145003FA769 /* View+Extentions.swift */,
+				C9C51D1D281591CC003FA769 /* CustomTextField.swift */,
+				C9C51D1F281591F9003FA769 /* TappeableNavigation.swift */,
+			);
+			path = CoreUI;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -418,8 +438,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				C94B60B726AF183000283C65 /* CustomError.swift in Sources */,
+				C9C51D1928157B3B003FA769 /* SignInDTO.swift in Sources */,
 				C94B60C626AF184A00283C65 /* AddRestaurantViewModel.swift in Sources */,
 				C94B60B426AF183000283C65 /* RestaurantServices.swift in Sources */,
+				C9C51D1E281591CC003FA769 /* CustomTextField.swift in Sources */,
 				C94B60AB26AF183000283C65 /* RestaurantViewModel.swift in Sources */,
 				C94B60AD26AF183000283C65 /* RestaurantModel.swift in Sources */,
 				C94B60D926AF2EC600283C65 /* AddUserViewModel.swift in Sources */,
@@ -430,13 +452,14 @@
 				C94B60B526AF183000283C65 /* Network.swift in Sources */,
 				C94B60AC26AF183000283C65 /* CommentsModel.swift in Sources */,
 				C94B60D526AF1B5B00283C65 /* AdminUsersViewModel.swift in Sources */,
+				C9C51D1C28159145003FA769 /* View+Extentions.swift in Sources */,
 				C94B60CB26AF184A00283C65 /* AddRestaurantView.swift in Sources */,
 				C94B60C926AF184A00283C65 /* AdminRestaurantsView.swift in Sources */,
 				C94B60AF26AF183000283C65 /* Spinner.swift in Sources */,
 				C94B60D126AF1A8C00283C65 /* AddUsersView.swift in Sources */,
 				C94B60CA26AF184A00283C65 /* EditRestaurantView.swift in Sources */,
 				C94B60A426AF183000283C65 /* SignUpView.swift in Sources */,
-				C94B60A726AF183000283C65 /* LoginView.swift in Sources */,
+				C94B60A726AF183000283C65 /* SignInView.swift in Sources */,
 				C94B60A626AF183000283C65 /* TokenModel.swift in Sources */,
 				C94B60A226AF183000283C65 /* UserServices.swift in Sources */,
 				C94B60C726AF184A00283C65 /* AdminRestaurantViewModel.swift in Sources */,
@@ -450,6 +473,7 @@
 				C94B60C526AF184A00283C65 /* EditRestaurantViewModel.swift in Sources */,
 				C94B60C826AF184A00283C65 /* AdminHomeView.swift in Sources */,
 				C94B60CD26AF1A6000283C65 /* AdminUsersView.swift in Sources */,
+				C9C51D20281591F9003FA769 /* TappeableNavigation.swift in Sources */,
 				C94B60B626AF183000283C65 /* Request.swift in Sources */,
 				C94B60AA26AF183000283C65 /* AddReviewViewModel.swift in Sources */,
 				C94B60A326AF183000283C65 /* SignUpViewModel.swift in Sources */,
@@ -592,7 +616,7 @@
 				DEVELOPMENT_TEAM = SVKXCL5QB5;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = RestaurantReview/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -614,7 +638,7 @@
 				DEVELOPMENT_TEAM = SVKXCL5QB5;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = RestaurantReview/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
