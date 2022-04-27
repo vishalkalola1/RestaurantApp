@@ -8,16 +8,15 @@
 import Foundation
 
 ///Create Enum for Define Custom Error into Default Error Class
-enum CustomError : Error {
+enum RRError : Error, LocalizedError {
     case NullURL
     case NoToken
     case NullData
     case UnAuthorized
-}
-
-///Return the localized define error for user friend message and understandable message.
-extension CustomError: LocalizedError {
-    public var errorDescription: String? {
+    case invalidCredentials
+    case custom(_ message: String)
+    
+    public var errorDescription: String {
         switch self {
         case .NullURL:
             return "The url is not valid."
@@ -27,19 +26,16 @@ extension CustomError: LocalizedError {
             return "Username and password is wrong"
         case .NoToken:
             return "Session is expired"
+        case .invalidCredentials:
+            return "Invalid credentials"
+        case .custom(let message):
+            return message
         }
     }
 }
 
-struct ServerError: LocalizedError {
+struct ErrorType: Identifiable {
     
-    private var message: String
-    
-    public var errorDescription: String? {
-        return message
-    }
-    
-    init(_ message: String) {
-        self.message = message
-    }
+    var id = UUID()
+    var error: RRError
 }

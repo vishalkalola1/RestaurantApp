@@ -52,11 +52,10 @@ struct SignInView: View {
                                     
                                     Button {
                                         if username == "" {
-                                            viewModel.error = "Please enter username"
-                                            viewModel.alert = true
+                                            viewModel.appError = ErrorType(error: .custom("Please enter username"))
                                         } else if password == "" {
-                                            viewModel.error = "Please enter password"
-                                            viewModel.alert = true
+                                            viewModel.appError = ErrorType(error: .custom("Please enter password"))
+                                            //viewModel.alert = true
                                         } else {
                                             viewModel.loading = true
                                             let credentials = ["username": username,
@@ -100,7 +99,9 @@ struct SignInView: View {
                            minHeight: geo.size.height,
                            maxHeight: .infinity,
                            alignment: .center)
-                    .alert(isPresented: $viewModel.alert, title: "", message: viewModel.error)
+                    .alert(item: $viewModel.appError) { appError in
+                        Alert(title: Text("Error"), message: Text(appError.error.errorDescription), dismissButton: nil)
+                    }
                 }
                 .frame(minWidth:0,
                        maxWidth: .infinity,

@@ -14,7 +14,7 @@ class SignInViewModel: ObservableObject {
         didSet {
             self.loading = false
             if tokenModel?.key == nil {
-                self.error = "Invalid credentials"
+                appError = ErrorType(error: .invalidCredentials)
             } else {
                 UserDefaults.standard.set(self.tokenModel?.key, forKey: "token")
                 if let is_superuser = tokenModel?.user?.is_superuser, is_superuser {
@@ -26,13 +26,12 @@ class SignInViewModel: ObservableObject {
         }
     }
     
-    @Published public var error: String? {
+    @Published public var appError: ErrorType? = nil {
         didSet {
             self.loading = false
-            alert = error != nil
         }
     }
-    @Published public var alert: Bool = false
+    
     @Published public var loading: Bool = false
     @Published public var moveToSuccess: Bool = false
     @Published public var moveToAdmin: Bool = false
@@ -49,12 +48,12 @@ class SignInViewModel: ObservableObject {
         await fillData(result: result)
     }
     
-    @MainActor func fillData(result: Result<TokenModel, Error>) {
+    @MainActor func fillData(result: Result<TokenModel, RRError>) {
         switch result {
         case .success(let tokenModel):
             self.tokenModel = tokenModel
         case .failure(let error):
-            self.error = error.localizedDescription
+            appError = ErrorType(error: error)
         }
     }
 }

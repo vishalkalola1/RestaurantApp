@@ -13,10 +13,9 @@ typealias UsersResult = (Result<[UserModel], Error>) -> Void
 typealias UserResult = (Result<UserModel, Error>) -> Void
 
 protocol UserServicesType: AnyObject {
-    @available(iOS 15.0, *)
-    func login(_ credentials: [String:Any]) async ->  Result<TokenModel, Error>
     
-    func login(_ credentials: [String:Any], completion: @escaping LoginResult)
+    func login(_ credentials: [String:Any]) async ->  Result<TokenModel, RRError>
+    
     func register(_ user: [String:Any], completion: @escaping LoginResult)
     func users(completion: @escaping UsersResult)
     func userEdit(_ id: String, user: [String:Any], completion: @escaping UserResult)
@@ -34,36 +33,10 @@ class UserServices: UserServicesType {
         self.network = network
     }
     
-    /**
-     * Name: LoginAPI
-     * Params: UserName, Password, completion
-     * Return `LoginResult`
-     */
-    func login(_ credentials: [String:Any], completion: @escaping LoginResult) {
+    func login(_ credentials: [String:Any]) async ->  Result<TokenModel, RRError> {
         
         guard let url = URLs.urlBuilder(.login) else {
-            return completion(.failure(CustomError.NullURL))
-        }
-        
-        let request = URLRequest.builder(url, httpMethod: .POST, body: credentials)
-        
-        network.api(with: request, model: TokenModel.self) { results in
-            switch results {
-            case .success(let result):
-                completion(.success(result))
-                break;
-            case .failure(let error):
-                completion(.failure(error))
-                break;
-            }
-        }
-    }
-    
-    @available(iOS 15.0, *)
-    func login(_ credentials: [String:Any]) async ->  Result<TokenModel, Error> {
-        
-        guard let url = URLs.urlBuilder(.login) else {
-            return .failure(CustomError.NullURL)
+            return .failure(RRError.NullURL)
         }
         
         let request = URLRequest.builder(url, httpMethod: .POST, body: credentials)
@@ -79,7 +52,7 @@ class UserServices: UserServicesType {
     func register(_ user: [String:Any], completion: @escaping LoginResult) {
         
         guard let url = URLs.urlBuilder(.register) else {
-            return completion(.failure(CustomError.NullURL))
+            return completion(.failure(RRError.NullURL))
         }
         
         let request = URLRequest.builder(url, httpMethod: .POST, body: user)
@@ -98,7 +71,7 @@ class UserServices: UserServicesType {
     
     func users(completion: @escaping UsersResult) {
         guard let url = URLs.urlBuilder(.users) else {
-            return completion(.failure(CustomError.NullURL))
+            return completion(.failure(RRError.NullURL))
         }
         
         let request = URLRequest.builder(url, httpMethod: .GET)
@@ -118,7 +91,7 @@ class UserServices: UserServicesType {
     func userEdit(_ id: String, user: [String:Any], completion: @escaping UserResult) {
         let urlstr = EndPoints.users.url + "/" + id
         guard let url = URLs.urlPathBuilder(urlstr) else {
-            return completion(.failure(CustomError.NullURL))
+            return completion(.failure(RRError.NullURL))
         }
         
         let request = URLRequest.builder(url, httpMethod: .PUT, body: user)
@@ -138,7 +111,7 @@ class UserServices: UserServicesType {
     func userDelete(_ id: String, completion: @escaping UserResult) {
         let urlstr = EndPoints.users.url + "/" + id
         guard let url = URLs.urlPathBuilder(urlstr) else {
-            return completion(.failure(CustomError.NullURL))
+            return completion(.failure(RRError.NullURL))
         }
         
         let request = URLRequest.builder(url, httpMethod: .DELETE)

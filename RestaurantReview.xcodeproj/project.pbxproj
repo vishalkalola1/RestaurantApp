@@ -31,7 +31,7 @@
 		C94B60B426AF183000283C65 /* RestaurantServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94B609C26AF183000283C65 /* RestaurantServices.swift */; };
 		C94B60B526AF183000283C65 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94B609E26AF183000283C65 /* Network.swift */; };
 		C94B60B626AF183000283C65 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94B609F26AF183000283C65 /* Request.swift */; };
-		C94B60B726AF183000283C65 /* CustomError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94B60A026AF183000283C65 /* CustomError.swift */; };
+		C94B60B726AF183000283C65 /* RRError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94B60A026AF183000283C65 /* RRError.swift */; };
 		C94B60B826AF183000283C65 /* URLs.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94B60A126AF183000283C65 /* URLs.swift */; };
 		C94B60C526AF184A00283C65 /* EditRestaurantViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94B60BB26AF184A00283C65 /* EditRestaurantViewModel.swift */; };
 		C94B60C626AF184A00283C65 /* AddRestaurantViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94B60BC26AF184A00283C65 /* AddRestaurantViewModel.swift */; };
@@ -86,7 +86,7 @@
 		C94B609C26AF183000283C65 /* RestaurantServices.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantServices.swift; sourceTree = "<group>"; };
 		C94B609E26AF183000283C65 /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		C94B609F26AF183000283C65 /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
-		C94B60A026AF183000283C65 /* CustomError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomError.swift; sourceTree = "<group>"; };
+		C94B60A026AF183000283C65 /* RRError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RRError.swift; sourceTree = "<group>"; };
 		C94B60A126AF183000283C65 /* URLs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLs.swift; sourceTree = "<group>"; };
 		C94B60BB26AF184A00283C65 /* EditRestaurantViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditRestaurantViewModel.swift; sourceTree = "<group>"; };
 		C94B60BC26AF184A00283C65 /* AddRestaurantViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddRestaurantViewModel.swift; sourceTree = "<group>"; };
@@ -253,7 +253,7 @@
 			children = (
 				C94B609E26AF183000283C65 /* Network.swift */,
 				C94B609F26AF183000283C65 /* Request.swift */,
-				C94B60A026AF183000283C65 /* CustomError.swift */,
+				C94B60A026AF183000283C65 /* RRError.swift */,
 				C94B60A126AF183000283C65 /* URLs.swift */,
 			);
 			path = Network;
@@ -437,7 +437,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C94B60B726AF183000283C65 /* CustomError.swift in Sources */,
+				C94B60B726AF183000283C65 /* RRError.swift in Sources */,
 				C9C51D1928157B3B003FA769 /* SignInDTO.swift in Sources */,
 				C94B60C626AF184A00283C65 /* AddRestaurantViewModel.swift in Sources */,
 				C94B60B426AF183000283C65 /* RestaurantServices.swift in Sources */,
@@ -613,7 +613,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"RestaurantReview/Preview Content\"";
-				DEVELOPMENT_TEAM = SVKXCL5QB5;
+				DEVELOPMENT_TEAM = T5Q4JR26A9;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = RestaurantReview/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -621,7 +621,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.andesinfotech.RestaurantReview;
+				PRODUCT_BUNDLE_IDENTIFIER = com.andes.RestaurantReview;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -633,9 +633,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"RestaurantReview/Preview Content\"";
-				DEVELOPMENT_TEAM = SVKXCL5QB5;
+				DEVELOPMENT_TEAM = T5Q4JR26A9;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = RestaurantReview/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -643,8 +644,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.andesinfotech.RestaurantReview;
+				PRODUCT_BUNDLE_IDENTIFIER = com.andes.RestaurantReview;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

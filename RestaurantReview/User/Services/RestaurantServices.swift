@@ -39,7 +39,7 @@ class RestaurantServices: RestaurantServicesType {
     func restaurants(completion: @escaping RestaurantsResult) {
         
         guard let url = URLs.urlBuilder(.restaurants) else {
-            return completion(.failure(CustomError.NullURL))
+            return completion(.failure(RRError.NullURL))
         }
         
         let request = URLRequest.builder(url, httpMethod: .GET)
@@ -64,7 +64,7 @@ class RestaurantServices: RestaurantServicesType {
     func restaurantsInsert(data: [String : Any], completion: @escaping RestaurantResult) {
         let urlString = EndPoints.restaurants.url + "/create"
         guard let url = URLs.urlPathBuilder(urlString) else {
-            return completion(.failure(CustomError.NullURL))
+            return completion(.failure(RRError.NullURL))
         }
         
         let request = URLRequest.builder(url, httpMethod: .POST, body: data)
@@ -89,7 +89,7 @@ class RestaurantServices: RestaurantServicesType {
     func restaurantEdit(_ id: String, data: [String : Any], completion: @escaping RestaurantResult) {
         let url = EndPoints.restaurants.url + "/" + id
         guard let url = URLs.urlPathBuilder(url) else {
-            return completion(.failure(CustomError.NullURL))
+            return completion(.failure(RRError.NullURL))
         }
         
         let request = URLRequest.builder(url, httpMethod: .PUT, body: data)
@@ -114,7 +114,7 @@ class RestaurantServices: RestaurantServicesType {
     func restaurantDelete(_ id: String, completion: @escaping RestaurantResult) {
         let url = EndPoints.restaurants.url + "/" + id
         guard let url = URLs.urlPathBuilder(url) else {
-            return completion(.failure(CustomError.NullURL))
+            return completion(.failure(RRError.NullURL))
         }
         
         let request = URLRequest.builder(url, httpMethod: .DELETE)
@@ -139,7 +139,7 @@ class RestaurantServices: RestaurantServicesType {
     func comments(id: String, completion: @escaping CommentsResult) {
         let url = EndPoints.restaurants.url + "/" + id + "/" + EndPoints.reviews.url
         guard let url = URLs.urlPathBuilder(url) else {
-            return completion(.failure(CustomError.NullURL))
+            return completion(.failure(RRError.NullURL))
         }
         
         let request = URLRequest.builder(url, httpMethod: .GET)

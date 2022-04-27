@@ -30,7 +30,7 @@ class CommentServices: CommentServicesType {
     func comment(data: [String : Any], completion: @escaping CommentResult) {
         let urlstr = EndPoints.reviews.url
         guard let url = URLs.urlPathBuilder(urlstr) else {
-            return completion(.failure(CustomError.NullURL))
+            return completion(.failure(RRError.NullURL))
         }
         
         let request = URLRequest.builder(url, httpMethod: .POST, body: data)
@@ -50,7 +50,7 @@ class CommentServices: CommentServicesType {
     func commentEdit(_ id: String, data: [String : Any], completion: @escaping CommentResult) {
         let urlstr = EndPoints.reviews.url + "/" + id
         guard let url = URLs.urlPathBuilder(urlstr) else {
-            return completion(.failure(CustomError.NullURL))
+            return completion(.failure(RRError.NullURL))
         }
         
         let request = URLRequest.builder(url, httpMethod: .PUT, body: data)
@@ -70,7 +70,7 @@ class CommentServices: CommentServicesType {
     func commentDelete(_ id: String, completion: @escaping CommentResult) {
         let urlstr = EndPoints.reviews.url + "/" + id
         guard let url = URLs.urlPathBuilder(urlstr) else {
-            return completion(.failure(CustomError.NullURL))
+            return completion(.failure(RRError.NullURL))
         }
         
         let request = URLRequest.builder(url, httpMethod: .DELETE)
@@ -89,7 +89,7 @@ class CommentServices: CommentServicesType {
     
     func comments(completion: @escaping CommentsResult) {
         guard let url = URLs.urlBuilder(.reviews) else {
-            return completion(.failure(CustomError.NullURL))
+            return completion(.failure(RRError.NullURL))
         }
         
         let request = URLRequest.builder(url, httpMethod: .GET)
