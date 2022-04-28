@@ -14,13 +14,24 @@ struct TappableNavigation<Destination>: View where Destination: View {
     @State var isActive = false
     
     var body: some View {
-        Text(title)
-            .bold()
-            .font(.system(size: 15.0))
-            .foregroundColor(.blue)
-            .onTapGesture {
-                self.isActive = true
-            }
+            Text(title)
+                .bold()
+                .font(.system(size: 15.0))
+                .foregroundColor(.blue)
+                .onTapGesture {
+                    self.isActive = true
+                }
+                .onTapNavigation($isActive, destination: destination)
+    }
+}
+
+struct NonTappableNavigation<Destination>: View where Destination: View {
+    
+    var destination: Destination
+    @Binding var isActive: Bool
+    
+    var body: some View {
+        EmptyView()
             .onTapNavigation($isActive, destination: destination)
     }
 }

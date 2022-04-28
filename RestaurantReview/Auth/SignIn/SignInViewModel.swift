@@ -17,11 +17,7 @@ class SignInViewModel: ObservableObject {
                 appError = ErrorType(error: .invalidCredentials)
             } else {
                 UserDefaults.standard.set(self.tokenModel?.key, forKey: "token")
-                if let is_superuser = tokenModel?.user?.is_superuser, is_superuser {
-                    self.moveToAdmin = true
-                } else {
-                    self.moveToSuccess = true
-                }
+                moveToNextScreen = true
             }
         }
     }
@@ -31,10 +27,8 @@ class SignInViewModel: ObservableObject {
             self.loading = false
         }
     }
-    
+    @Published public var moveToNextScreen: Bool = false
     @Published public var loading: Bool = false
-    @Published public var moveToSuccess: Bool = false
-    @Published public var moveToAdmin: Bool = false
     
     private let userServices: UserServicesType
     
@@ -46,6 +40,20 @@ class SignInViewModel: ObservableObject {
     func login(_ credentials: [String: Any]) async {
         let result = await userServices.login(credentials)
         await fillData(result: result)
+    }
+    
+    func loginButtonAction(_ username: String, password: String) async {
+        if username == "" {
+            appError = ErrorType(error: .custom("Please enter username"))
+        } else if password == "" {
+            appError = ErrorType(error: .custom("Please enter password"))
+            //viewModel.alert = true
+        } else {
+            loading = true
+            let credentials = ["username": username,
+                               "password": password]
+            await login(credentials)
+        }
     }
     
     @MainActor func fillData(result: Result<TokenModel, RRError>) {

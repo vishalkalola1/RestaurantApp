@@ -41,43 +41,11 @@ struct SignInView: View {
                                 }
                             }.padding()
                             VStack {
-                                if !viewModel.loading {
-                                    NavigationLink(destination: RestaurantListView(viewModel: RestaurantViewModel(userModel: (viewModel.tokenModel?.user)!)), isActive: $viewModel.moveToSuccess) {
-                                        EmptyView()
+                                NonTappableNavigation(destination: isSuperUserView, isActive: $viewModel.moveToNextScreen)
+                                SpinnerButton(loading: $viewModel.loading) {
+                                    Task {
+                                        await viewModel.loginButtonAction(username, password: password)
                                     }
-                                    
-                                    NavigationLink(destination: AdminHomeView(userModel: viewModel.tokenModel?.user ?? nil), isActive: $viewModel.moveToAdmin) {
-                                        EmptyView()
-                                    }
-                                    
-                                    Button {
-                                        if username == "" {
-                                            viewModel.appError = ErrorType(error: .custom("Please enter username"))
-                                        } else if password == "" {
-                                            viewModel.appError = ErrorType(error: .custom("Please enter password"))
-                                            //viewModel.alert = true
-                                        } else {
-                                            viewModel.loading = true
-                                            let credentials = ["username": username,
-                                                               "password": password]
-                                            Task.detached {
-                                                await viewModel.login(credentials)
-                                            }
-                                        }
-                                    } label: {
-                                        Text("LOG IN")
-                                            .bold()
-                                            .foregroundColor(.white)
-                                            .frame(width: 150, height: 45, alignment: .center)
-                                            .background(Color.blue)
-                                            .font(.system(size: 13.0))
-                                            .cornerRadius(45, antialiased: false)
-                                    }
-                                    .background(Color.blue)
-                                    .cornerRadius(45, antialiased: true)
-                                } else {
-                                    Spinner()
-                                        .frame(width: 45, height: 45, alignment: .center)
                                 }
                             }
                         }.frame(width: geo.size.width, alignment: .center)
@@ -99,19 +67,26 @@ struct SignInView: View {
                            minHeight: geo.size.height,
                            maxHeight: .infinity,
                            alignment: .center)
-                    .alert(item: $viewModel.appError) { appError in
-                        Alert(title: Text("Error"), message: Text(appError.error.errorDescription), dismissButton: nil)
-                    }
                 }
-                .frame(minWidth:0,
-                       maxWidth: .infinity,
-                       minHeight: geo.size.height,
-                       maxHeight: .infinity,
-                       alignment: .center)
             }
             .navigationBarHidden(true)
         }
         .navigationViewStyle(.stack)
+        .alert(item: $viewModel.appError) { appError in
+            Alert(title: Text("Error"), message: Text(appError.error.errorDescription), dismissButton: nil)
+        }
+    }
+    
+    @ViewBuilder var isSuperUserView: some View {
+        if let tokenModel = viewModel.tokenModel, let user = tokenModel.user {
+            if user.isSuperUser {
+                AdminHomeView(userModel: user)
+            } else {
+                RestaurantListView(viewModel: RestaurantViewModel(userModel: user))
+            }
+        } else {
+            EmptyView()
+        }
     }
 }
 

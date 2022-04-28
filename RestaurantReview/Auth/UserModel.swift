@@ -27,6 +27,14 @@ class UserModel: ObservableObject, Identifiable, Codable {
         (firstname ?? "") + " " + (lastname ?? "")
     }
     
+    var isSuperUser: Bool {
+        return is_superuser ?? false
+    }
+    
+    var isUser: Bool {
+        return !(is_superuser ?? false)
+    }
+    
     private enum CodingKeys : String, CodingKey {
         case id, email, token, message, username, is_superuser, is_staff
         case firstname = "first_name"
