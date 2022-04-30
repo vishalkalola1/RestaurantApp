@@ -54,6 +54,7 @@
 		C94B60E726AF604800283C65 /* AdminEditReviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94B60E626AF604800283C65 /* AdminEditReviewViewModel.swift */; };
 		C94B60EA26AF8B9400283C65 /* Restaurant_backend.zip in Resources */ = {isa = PBXBuildFile; fileRef = C94B60E926AF8B9400283C65 /* Restaurant_backend.zip */; };
 		C96071C5281B32A2002C01B5 /* SpinnerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96071C4281B32A2002C01B5 /* SpinnerButton.swift */; };
+		C970CB6D281DA552007EDEAA /* DeviceRotationViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = C970CB6C281DA552007EDEAA /* DeviceRotationViewModifier.swift */; };
 		C9C51D1928157B3B003FA769 /* SignInDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C51D1828157B3B003FA769 /* SignInDTO.swift */; };
 		C9C51D1C28159145003FA769 /* View+Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C51D1B28159145003FA769 /* View+Extentions.swift */; };
 		C9C51D1E281591CC003FA769 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C51D1D281591CC003FA769 /* CustomTextField.swift */; };
@@ -110,6 +111,7 @@
 		C94B60E626AF604800283C65 /* AdminEditReviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminEditReviewViewModel.swift; sourceTree = "<group>"; };
 		C94B60E926AF8B9400283C65 /* Restaurant_backend.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = Restaurant_backend.zip; sourceTree = "<group>"; };
 		C96071C4281B32A2002C01B5 /* SpinnerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerButton.swift; sourceTree = "<group>"; };
+		C970CB6C281DA552007EDEAA /* DeviceRotationViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceRotationViewModifier.swift; sourceTree = "<group>"; };
 		C9C51D1828157B3B003FA769 /* SignInDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInDTO.swift; sourceTree = "<group>"; };
 		C9C51D1B28159145003FA769 /* View+Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extentions.swift"; sourceTree = "<group>"; };
 		C9C51D1D281591CC003FA769 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
@@ -366,6 +368,7 @@
 				C9C51D1D281591CC003FA769 /* CustomTextField.swift */,
 				C9C51D1F281591F9003FA769 /* TappeableNavigation.swift */,
 				C96071C4281B32A2002C01B5 /* SpinnerButton.swift */,
+				C970CB6C281DA552007EDEAA /* DeviceRotationViewModifier.swift */,
 			);
 			path = CoreUI;
 			sourceTree = "<group>";
@@ -471,6 +474,7 @@
 				C94B60A826AF183000283C65 /* SignInViewModel.swift in Sources */,
 				C94B60B026AF183000283C65 /* RatingView.swift in Sources */,
 				C94B60E326AF3B2000283C65 /* AdminReviewsViewModel.swift in Sources */,
+				C970CB6D281DA552007EDEAA /* DeviceRotationViewModifier.swift in Sources */,
 				C94B60DC26AF396600283C65 /* AdminReviewsViews.swift in Sources */,
 				C94B60D726AF232800283C65 /* EditUserViewModel.swift in Sources */,
 				C94B60C526AF184A00283C65 /* EditRestaurantViewModel.swift in Sources */,

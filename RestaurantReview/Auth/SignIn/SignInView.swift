@@ -7,26 +7,6 @@
 
 import SwiftUI
 
-struct DeviceRotationViewModifier: ViewModifier {
-    let action: (UIInterfaceOrientation) -> Void
-
-    func body(content: Content) -> some View {
-        content
-            .onAppear()
-            .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
-                guard let scene = UIApplication.shared.keyWindow?.windowScene else { return }
-                action(scene.interfaceOrientation)
-            }
-    }
-}
-
-// A View wrapper to make the modifier easier to use
-extension View {
-    func onRotate(perform action: @escaping (UIInterfaceOrientation) -> Void) -> some View {
-        self.modifier(DeviceRotationViewModifier(action: action))
-    }
-}
-
 struct SignInView: View {
     
     @StateObject var viewModel = SignInViewModel()
@@ -173,21 +153,4 @@ struct LoginView_Previews: PreviewProvider {
                 .navigationViewStyle(.stack)
         }
     }
-}
-
-extension UIApplication {
-    
-    var keyWindow: UIWindow? {
-        // Get connected scenes
-        return UIApplication.shared.connectedScenes
-            // Keep only active scenes, onscreen and visible to the user
-            .filter { $0.activationState == .foregroundActive }
-            // Keep only the first `UIWindowScene`
-            .first(where: { $0 is UIWindowScene })
-            // Get its associated windows
-            .flatMap({ $0 as? UIWindowScene })?.windows
-            // Finally, keep only the key window
-            .first(where: \.isKeyWindow)
-    }
-    
 }
