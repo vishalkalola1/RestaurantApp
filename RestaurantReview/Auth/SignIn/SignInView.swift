@@ -7,73 +7,78 @@
 
 import SwiftUI
 
+struct DeviceRotationViewModifier: ViewModifier {
+    let action: (UIInterfaceOrientation) -> Void
+
+    func body(content: Content) -> some View {
+        content
+            .onAppear()
+            .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
+                guard let scene = UIApplication.shared.keyWindow?.windowScene else { return }
+                action(scene.interfaceOrientation)
+            }
+    }
+}
+
+// A View wrapper to make the modifier easier to use
+extension View {
+    func onRotate(perform action: @escaping (UIInterfaceOrientation) -> Void) -> some View {
+        self.modifier(DeviceRotationViewModifier(action: action))
+    }
+}
+
 struct SignInView: View {
     
     @StateObject var viewModel = SignInViewModel()
-    
-    @State private var username: String = ""
-    @State private var password: String = ""
-    @State public var registerClick: Bool = false
+    @State private var isRegisterClick = false
+    @State private var orientation = UIInterfaceOrientation.portrait
     
     var body: some View {
         NavigationView {
             GeometryReader { geo in
                 ScrollView {
-                    VStack(alignment: .center, spacing: 10) {
-                        VStack {
-                            Image("backgroundImage")
-                                .resizable()
-                                .frame(width: geo.size.height / 2, alignment: .center)
-                                .aspectRatio(contentMode: .fit)
-                        }.frame(width: geo.size.width, height: geo.size.height / 2, alignment: .center)
-                        VStack(alignment: .center) {
+                    if orientation.isLandscape {
+                        HStack(alignment: .center, spacing: 10) {
+                            LoginImageView(width: geo.size.width * 0.40)
+                                .frame(width: geo.size.width * 0.40, height: geo.size.height, alignment: .center)
                             VStack {
-                                Text("Welcome back!")
-                                    .font(.title).bold()
-                                Text("Login your existing account")
-                                    .font(.system(size: 15))
-                                    .foregroundColor(.gray)
-                            }
-                            VStack {
-                                VStack(alignment: .center, spacing: 25) {
-                                    TextFieldView(placeHolder: "Username", imageName: "person", text: $username)
-                                    TextFieldView(placeHolder: "Password", imageName: "lock", text: $password, isSecure: true)
-                                }
-                            }.padding()
-                            VStack {
-                                NonTappableNavigation(destination: isSuperUserView, isActive: $viewModel.moveToNextScreen)
-                                SpinnerButton(loading: $viewModel.loading) {
+                                LoginCredentialsView(registerClick: $isRegisterClick, isLoading: $viewModel.loading) { username, password in
                                     Task {
                                         await viewModel.loginButtonAction(username, password: password)
                                     }
                                 }
                             }
-                        }.frame(width: geo.size.width, alignment: .center)
-                        .padding()
-                        VStack {
-                            Spacer()
-                                .padding(30)
-                            HStack(alignment: .center, spacing: 0) {
-                                Text("Don't have an account? ")
-                                    .font(.system(size: 15.0))
-                                TappableNavigation(destination: SignUpView(), title: "Sign Up")
-                                
-                            }.padding(20)
                         }
-                        .frame(width: geo.size.width, alignment: .center)
+                        .frame(minHeight: geo.size.height)
+                    } else {
+                        VStack {
+                            LoginImageView(width: geo.size.height * 0.40)
+                                .frame(width: geo.size.width, height: geo.size.height * 0.40)
+                            LoginCredentialsView(registerClick: $isRegisterClick, isLoading: $viewModel.loading) { username, password in
+                                Task {
+                                    await viewModel.loginButtonAction(username, password: password)
+                                }
+                            }
+                        }.frame(minHeight: geo.size.height)
                     }
-                    .frame(minWidth:0,
-                           maxWidth: .infinity,
-                           minHeight: geo.size.height,
-                           maxHeight: .infinity,
-                           alignment: .center)
+                    NonTappableNavigation(destination: isSuperUserView, isActive: $viewModel.moveToNextScreen)
+                    NonTappableNavigation(destination: SignUpView(), isActive: $isRegisterClick)
+                    
                 }
+                .frame(minWidth:0,
+                       maxWidth: .infinity,
+                       minHeight: geo.size.height,
+                       maxHeight: .infinity,
+                       alignment: .center)
             }
             .navigationBarHidden(true)
         }
         .navigationViewStyle(.stack)
         .alert(item: $viewModel.appError) { appError in
             Alert(title: Text("Error"), message: Text(appError.error.errorDescription), dismissButton: nil)
+        }
+        .onRotate { newOrientation in
+            orientation = newOrientation
         }
     }
     
@@ -90,14 +95,99 @@ struct SignInView: View {
     }
 }
 
+struct LoginImageView: View {
+    
+    var width: CGFloat
+    
+    var body: some View {
+        VStack {
+            Image("backgroundImage")
+                .resizable()
+                .frame(width: width, height: width)
+        }
+    }
+}
+
+struct LoginCredentialsView: View {
+    
+    @State private var username: String = ""
+    @State private var password: String = ""
+    @Binding var registerClick: Bool
+    
+    @Binding var isLoading: Bool
+
+    var loginAction: (_ username: String, _ password: String) -> Void
+    
+    var body: some View {
+        VStack {
+            VStack(alignment: .center) {
+                VStack {
+                    Text("Welcome back!")
+                        .font(.title).bold()
+                    Text("Login your existing account")
+                        .font(.system(size: 15))
+                        .foregroundColor(.gray)
+                }
+                .padding(.top, 10)
+                VStack {
+                    VStack(alignment: .center, spacing: 25) {
+                        TextFieldView(placeHolder: "Username", imageName: "person", text: $username)
+                        TextFieldView(placeHolder: "Password", imageName: "lock", text: $password, isSecure: true)
+                    }
+                }.padding()
+                VStack {
+                    SpinnerButton(loading: $isLoading) {
+                        loginAction(username, password)
+                    }
+                }
+            }
+            VStack {
+                Spacer()
+                HStack(alignment: .center, spacing: 0) {
+                    Spacer()
+                    Text("Don't have an account? ")
+                        .font(.system(size: 15.0))
+                        .foregroundColor(.black)
+                    Text("Sign Up")
+                        .bold()
+                        .font(.system(size: 15.0))
+                        .foregroundColor(.blue)
+                        .onTapGesture {
+                            self.registerClick = true
+                        }
+                    Spacer()
+                    
+                }.padding(10)
+            }
+        }
+    }
+}
+
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             SignInView()
-                .preferredColorScheme(.dark)
+                .preferredColorScheme(.light)
                 .padding(0.0)
                 .previewInterfaceOrientation(.portrait)
                 .navigationViewStyle(.stack)
         }
     }
+}
+
+extension UIApplication {
+    
+    var keyWindow: UIWindow? {
+        // Get connected scenes
+        return UIApplication.shared.connectedScenes
+            // Keep only active scenes, onscreen and visible to the user
+            .filter { $0.activationState == .foregroundActive }
+            // Keep only the first `UIWindowScene`
+            .first(where: { $0 is UIWindowScene })
+            // Get its associated windows
+            .flatMap({ $0 as? UIWindowScene })?.windows
+            // Finally, keep only the key window
+            .first(where: \.isKeyWindow)
+    }
+    
 }
