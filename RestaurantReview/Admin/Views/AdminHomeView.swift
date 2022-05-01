@@ -9,31 +9,79 @@ import SwiftUI
 
 struct AdminHomeView: View {
     
-    var userModel: UserModel?
+    var userModel: UserModel
     @Environment(\.presentationMode) var presentationMode
     
+    @State private var orientation: UIInterfaceOrientation = .portrait
+    @State private var moveToReviews = false
+    @State private var moveToRestaurant = false
+    @State private var moveToUsers = false
+    
     var body: some View {
-        GeometryReader { geo in
-            VStack(alignment: .center, spacing: 0) {
-                UserBox(width:  geo.size.width, height: geo.size.height/3)
-                RestaurantBox(width:  geo.size.width, height: geo.size.height/3, userModel: userModel!)
-                ReviewBox(width:  geo.size.width, height: geo.size.height/3)
-            }.frame(width: geo.size.width, height: geo.size.height, alignment: .center)
-            .navigationTitle("Admin")
-            .navigationBarBackButtonHidden(true)
-            .navigationBarItems(trailing:
-                                    Button(action: {
-                                        self.presentationMode.wrappedValue.dismiss()
-                                    }, label: {
-                                        Image(systemName: "power")
-                                    }))
-        }
+        VStack {
+            GeometryReader { geo in
+                if orientation.isLandscape {
+                    HStack(alignment: .center, spacing: 3) {
+                        UserBox(width:  (geo.size.width/3) - 3, height: geo.size.height, moveToUsers: $moveToUsers)
+                            .cornerRadius(10)
+                        RestaurantBox(width:  (geo.size.width/3) - 3, height: geo.size.height, moveToRestaurant: $moveToRestaurant)
+                            .cornerRadius(10)
+                        ReviewBox(width: (geo.size.width/3) - 3, height: geo.size.height, moveToReviews: $moveToReviews)
+                            .cornerRadius(10)
+                    }.frame(width: geo.size.width, height: geo.size.height, alignment: .center)
+                        .navigationTitle("Admin")
+                        .navigationBarBackButtonHidden(true)
+                        .navigationBarItems(trailing:
+                                                Button(action: {
+                            self.presentationMode.wrappedValue.dismiss()
+                        }, label: {
+                            Image(systemName: "power")
+                        }
+                    ))
+                } else {
+                    VStack(alignment: .center, spacing: 3) {
+                        UserBox(width:  geo.size.width, height: geo.size.height/3, moveToUsers: $moveToUsers)
+                            .cornerRadius(10)
+                        RestaurantBox(width:  geo.size.width, height: geo.size.height/3, moveToRestaurant: $moveToRestaurant)
+                            .cornerRadius(10)
+                        ReviewBox(width:  geo.size.width, height: geo.size.height/3, moveToReviews: $moveToReviews)
+                            .cornerRadius(10)
+                    }.frame(width: geo.size.width, height: geo.size.height, alignment: .center)
+                        .navigationTitle("Admin")
+                        .navigationBarBackButtonHidden(true)
+                        .navigationBarItems(trailing:
+                                                Button(action: {
+                            self.presentationMode.wrappedValue.dismiss()
+                        }, label: {
+                            Image(systemName: "power")
+                        }
+                                                      ))
+                        .onRotate { newOrientation in
+                            orientation = newOrientation == .unknown ? .landscapeLeft : newOrientation
+                        }
+                }
+                NonTappableNavigation(destination: AdminReviewsViews(viewModel: AdminReviewsViewModel()), isActive: $moveToReviews)
+                NonTappableNavigation(destination: AdminRestaurantsView(viewModel: AdminRestaurantViewModel(userModel: userModel)), isActive: $moveToRestaurant)
+                NonTappableNavigation(destination: AdminUsersView(viewModel: AdminUsersViewModel()), isActive: $moveToUsers)
+            }
+            .onRotate { newOrientation in
+                orientation = newOrientation == .unknown ? .landscapeLeft : newOrientation
+            }
+            .onAppear {
+                orientation = self.getOrientation()
+            }
+        }.padding(3)
     }
 }
 
 struct AdminHomeView_Previews: PreviewProvider {
     static var previews: some View {
-        AdminHomeView(userModel: UserModel(id: 1, firstname: "", lastname: "", email: "", token: "", username: "", is_superuser: true, is_staff: true))
+        NavigationView {
+            AdminHomeView(userModel: UserModel(id: 1, firstname: "", lastname: "", email: "", token: "", username: "", is_superuser: true, is_staff: true))
+                .previewInterfaceOrientation(.landscapeLeft)
+        }
+        .navigationViewStyle(.stack)
+        .previewInterfaceOrientation(.portrait)
     }
 }
 
@@ -42,7 +90,7 @@ struct ReviewBox: View {
     var width: CGFloat
     var height: CGFloat
     
-    @State private var moveToReviews = false
+    @Binding var moveToReviews: Bool
     
     var body: some View {
         ZStack {
@@ -50,9 +98,7 @@ struct ReviewBox: View {
                 .resizable()
                 .frame(width:width, height: height, alignment: .center)
             LinearGradient(gradient: Gradient(colors: [.white, .black]), startPoint: .top, endPoint: .bottom).opacity(0.5)
-            NavigationLink(destination: AdminReviewsViews(viewModel: AdminReviewsViewModel()), isActive: $moveToReviews) {
-                EmptyView()
-            }
+            
             Button {
                 moveToReviews = true
             } label: {
@@ -70,8 +116,7 @@ struct RestaurantBox: View {
     
     var width: CGFloat
     var height: CGFloat
-    var userModel: UserModel
-    @State private var moveToRestaurant = false
+    @Binding var moveToRestaurant: Bool
     
     var body: some View {
         ZStack {
@@ -79,9 +124,6 @@ struct RestaurantBox: View {
                 .resizable()
                 .frame(width:width, height: height, alignment: .center)
             LinearGradient(gradient: Gradient(colors: [.white, .black]), startPoint: .top, endPoint: .bottom).opacity(0.5)
-            NavigationLink(destination: AdminRestaurantsView(viewModel: AdminRestaurantViewModel(userModel: userModel)), isActive: $moveToRestaurant) {
-                EmptyView()
-            }
             Button {
                 moveToRestaurant = true
             } label: {
@@ -99,7 +141,7 @@ struct UserBox: View {
     
     var width: CGFloat
     var height: CGFloat
-    @State private var moveToUsers = false
+    @Binding var moveToUsers: Bool
     
     var body: some View {
         ZStack {
@@ -107,9 +149,7 @@ struct UserBox: View {
                 .resizable()
                 .frame(width:width, height: height, alignment: .center)
             LinearGradient(gradient: Gradient(colors: [.white, .black]), startPoint: .top, endPoint: .bottom).opacity(0.5)
-            NavigationLink(destination: AdminUsersView(viewModel: AdminUsersViewModel()), isActive: $moveToUsers) {
-                EmptyView()
-            }
+            
             Button {
                 moveToUsers = true
             } label: {

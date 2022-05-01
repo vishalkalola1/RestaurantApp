@@ -11,7 +11,7 @@ struct SignInView: View {
     
     @StateObject var viewModel = SignInViewModel()
     @State private var isRegisterClick = false
-    @State private var orientation = UIInterfaceOrientation.portrait
+    @State private var orientation: UIInterfaceOrientation = .portrait
     
     var body: some View {
         NavigationView {
@@ -58,7 +58,7 @@ struct SignInView: View {
             Alert(title: Text("Error"), message: Text(appError.error.errorDescription), dismissButton: nil)
         }
         .onRotate { newOrientation in
-            orientation = newOrientation
+            orientation = newOrientation == .unknown ? .landscapeLeft : newOrientation
         }
     }
     
@@ -127,7 +127,7 @@ struct LoginCredentialsView: View {
                     Spacer()
                     Text("Don't have an account? ")
                         .font(.system(size: 15.0))
-                        .foregroundColor(.black)
+                        .foregroundColor(Color.textColor)
                     Text("Sign Up")
                         .bold()
                         .font(.system(size: 15.0))
@@ -152,5 +152,11 @@ struct LoginView_Previews: PreviewProvider {
                 .previewInterfaceOrientation(.portrait)
                 .navigationViewStyle(.stack)
         }
+    }
+}
+
+public extension Color {
+    static var textColor: Color {
+        Color.init("textColor")
     }
 }

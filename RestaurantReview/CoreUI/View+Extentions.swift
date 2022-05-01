@@ -46,6 +46,13 @@ public extension View {
     func onRotate(perform action: @escaping (UIInterfaceOrientation) -> Void) -> some View {
         self.modifier(DeviceRotationViewModifier(action: action))
     }
+    
+    func getOrientation() -> UIInterfaceOrientation {
+        guard let scene = UIApplication.shared.keyWindow?.windowScene else {
+            return .portrait
+        }
+        return scene.interfaceOrientation
+    }
 }
 
 extension UIApplication {

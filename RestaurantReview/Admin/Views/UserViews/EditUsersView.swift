@@ -20,95 +20,97 @@ struct EditUsersView: View {
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
-        VStack {
+        ScrollView {
             VStack {
-                VStack(alignment: .center, spacing: 25) {
-                    TextFieldView(placeHolder: "First Name", imageName: "person", text: $firstname)
-                    TextFieldView(placeHolder: "Last Name", imageName: "person", text: $lastname)
-                    TextFieldView(placeHolder: "Email Id", imageName: "envelope", text: $email)
-                    HStack {
-                        Text("Gender").font(.headline)
-                        HStack{
-                            RadioButtonField(
-                                id: "Admin",
-                                label: "Admin",
-                                color:.blue,
-                                bgColor: .blue,
-                                isMarked: isAdmin ? true : false,
-                                callback: {
-                                    isAdmin = true
-                                }
-                            )
-                            RadioButtonField(
-                                id: "Normal",
-                                label: "Normal",
-                                color:.blue,
-                                bgColor: .blue,
-                                isMarked: isAdmin ? false : true,
-                                callback: {
-                                    isAdmin = false
-                                }
-                            )
+                VStack {
+                    VStack(alignment: .center, spacing: 25) {
+                        TextFieldView(placeHolder: "First Name", imageName: "person", text: $firstname)
+                        TextFieldView(placeHolder: "Last Name", imageName: "person", text: $lastname)
+                        TextFieldView(placeHolder: "Email Id", imageName: "envelope", text: $email)
+                        HStack {
+                            Text("Gender").font(.headline)
+                            HStack{
+                                RadioButtonField(
+                                    id: "Admin",
+                                    label: "Admin",
+                                    color:.blue,
+                                    bgColor: .blue,
+                                    isMarked: isAdmin ? true : false,
+                                    callback: {
+                                        isAdmin = true
+                                    }
+                                )
+                                RadioButtonField(
+                                    id: "Normal",
+                                    label: "Normal",
+                                    color:.blue,
+                                    bgColor: .blue,
+                                    isMarked: isAdmin ? false : true,
+                                    callback: {
+                                        isAdmin = false
+                                    }
+                                )
+                            }
+                            Spacer()
                         }
-                        Spacer()
+                        
                     }
-                    
-                }
-            }.padding()
-            VStack {
-                if !loading {
-                    Button {
-                        if valid() {
-                            loading = true
-                            let credentials = ["first_name": firstname,
-                                               "last_name": lastname,
-                                               "email": email,
-                                               "is_staff": isAdmin,
-                                               "is_superuser": isAdmin] as [String : Any]
-                            viewModel.edit(credentials)
-                        } else {
+                }.padding()
+                VStack {
+                    if !loading {
+                        Button {
+                            if valid() {
+                                loading = true
+                                let credentials = ["first_name": firstname,
+                                                   "last_name": lastname,
+                                                   "email": email,
+                                                   "is_staff": isAdmin,
+                                                   "is_superuser": isAdmin] as [String : Any]
+                                viewModel.edit(credentials)
+                            } else {
+                                loading = false
+                            }
+                        } label: {
+                            Text("Update")
+                                .bold()
+                                .foregroundColor(.white)
+                                .frame(width: 150, height: 45, alignment: .center)
+                                .background(Color.blue)
+                                .font(.system(size: 13.0))
+                                .cornerRadius(45, antialiased: false)
+                        }
+                        .alert(isPresented: $alert, title: "", message: error)
+                        .background(Color.blue)
+                        .cornerRadius(45, antialiased: true)
+                    } else {
+                        Spinner()
+                            .frame(width: 45, height: 45, alignment: .center)
+                    }
+                }.onReceive(viewModel.$user) { user in
+                    DispatchQueue.main.async {
+                        if loading == true {
                             loading = false
+                            error = "User Updated Succcessfully"
+                            self.presentationMode.wrappedValue.dismiss()
                         }
-                    } label: {
-                        Text("Update")
-                            .bold()
-                            .foregroundColor(.white)
-                            .frame(width: 150, height: 45, alignment: .center)
-                            .background(Color.blue)
-                            .font(.system(size: 13.0))
-                            .cornerRadius(45, antialiased: false)
                     }
-                    .alert(isPresented: $alert, title: "", message: error)
-                    .background(Color.blue)
-                    .cornerRadius(45, antialiased: true)
-                } else {
-                    Spinner()
-                        .frame(width: 45, height: 45, alignment: .center)
-                }
-            }.onReceive(viewModel.$user) { user in
-                DispatchQueue.main.async {
-                    if loading == true {
+                }.onReceive(viewModel.$error) { error in
+                    guard let error = error else { return }
+                    DispatchQueue.main.async {
+                        self.error = error
+                        alert = true
                         loading = false
-                        error = "User Updated Succcessfully"
-                        self.presentationMode.wrappedValue.dismiss()
                     }
                 }
-            }.onReceive(viewModel.$error) { error in
-                guard let error = error else { return }
-                DispatchQueue.main.async {
-                    self.error = error
-                    alert = true
-                    loading = false
-                }
-            }
-            Spacer()
-        }.onAppear {
-            self.firstname = viewModel.user.firstname ?? ""
-            self.lastname = viewModel.user.lastname ?? ""
-            self.email = viewModel.user.email ?? ""
-            self.isAdmin = (viewModel.user.is_superuser ?? false) && (viewModel.user.is_staff ?? false)
-        }.navigationBarTitleDisplayMode(.inline)
-        .navigationTitle(viewModel.user.username ?? "Edit")
+                Spacer()
+            }.onAppear {
+                self.firstname = viewModel.user.firstname ?? ""
+                self.lastname = viewModel.user.lastname ?? ""
+                self.email = viewModel.user.email ?? ""
+                self.isAdmin = (viewModel.user.is_superuser ?? false) && (viewModel.user.is_staff ?? false)
+            }.navigationBarTitleDisplayMode(.inline)
+                .navigationTitle(viewModel.user.username ?? "Edit")
+        }
     }
     
     func valid() -> Bool {

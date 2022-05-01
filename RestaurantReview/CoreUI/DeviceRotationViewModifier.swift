@@ -14,7 +14,10 @@ struct DeviceRotationViewModifier: ViewModifier {
         content
             .onAppear()
             .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
-                guard let scene = UIApplication.shared.keyWindow?.windowScene else { return }
+                guard let scene = UIApplication.shared.keyWindow?.windowScene else {
+                    print("unknowns")
+                    return
+                }
                 action(scene.interfaceOrientation)
             }
     }
